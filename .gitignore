@@ -423,3 +423,4 @@ fabric.properties
 /CleanForests.sln
 
 /API/appsettings.json
+/API/cleanforests.db
