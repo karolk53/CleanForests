@@ -1,5 +1,6 @@
 ﻿using API.DTOs;
 using API.Entities;
+using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -11,18 +12,19 @@ public class AccountController : BaseApiController
 {
     private readonly UserManager<AppUser> _userManager;
     private readonly RoleManager<AppRole> _roleManager;
+    private readonly ITokenService _tokenService;
     private readonly IMapper _mapper;
 
-    public AccountController(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, IMapper mapper)
+    public AccountController(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, ITokenService tokenService ,IMapper mapper)
     {
         _userManager = userManager;
         _roleManager = roleManager;
+        _tokenService = tokenService;
         _mapper = mapper;
     }
 
-
     [HttpPost("register")]
-    public async Task<ActionResult<AppUser>> RegisterNewUser(UserRegisterDto registerDto)
+    public async Task<ActionResult<UserDto>> RegisterNewUser(UserRegisterDto registerDto)
     {
         if (await UserExists(registerDto.UserName))
         {
@@ -38,7 +40,37 @@ public class AccountController : BaseApiController
             return BadRequest("Failed to register new user");
         }
 
-        return Ok(user);
+        return new UserDto
+        {
+            Username = user.UserName,
+            Email = user.Email,
+            Token = await _tokenService.CreateToken(user)
+        };
+    }
+
+    [HttpPost("login")]
+    public async Task<ActionResult<UserDto>> LoginUser(UserLoginDto loginDto)
+    {
+        var user = await _userManager.Users.SingleOrDefaultAsync(x => x.UserName.Equals(loginDto.UserName));
+
+        if (user == null)
+        {
+            return BadRequest("Invalid username or password");
+        }
+
+        var result = await _userManager.CheckPasswordAsync(user, loginDto.Password);
+
+        if (!result)
+        {
+            return BadRequest("Invalid username or password");
+        }
+
+        return new UserDto
+        {
+            Username = user.UserName,
+            Email = user.Email,
+            Token = await _tokenService.CreateToken(user)
+        };
     }
 
     private async Task<bool> UserExists(string username)
