@@ -9,5 +9,7 @@ public class AutoMapperProfiles : Profile
     public AutoMapperProfiles()
     {
         CreateMap<UserRegisterDto, AppUser>();
+        CreateMap<ClubCreateDto, Club>();
+        CreateMap<ClubCreateDto, Address>();
     }
 }

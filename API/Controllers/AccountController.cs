@@ -31,11 +31,22 @@ public class AccountController : BaseApiController
             return BadRequest("User with that username already exists");
         }
 
+        if (await EmailExists(registerDto.Email))
+        {
+            return BadRequest("Email is already taken");
+        }
+        
         var user = _mapper.Map<AppUser>(registerDto);
         user.UserName = registerDto.UserName.ToLower();
 
         var result = await _userManager.CreateAsync(user, registerDto.Password);
         if (!result.Succeeded)
+        {
+            return BadRequest("Failed to register new user");
+        }
+        
+        var roleResult = await _userManager.AddToRoleAsync(user, "Member");
+        if (!roleResult.Succeeded)
         {
             return BadRequest("Failed to register new user");
         }
@@ -76,6 +87,11 @@ public class AccountController : BaseApiController
     private async Task<bool> UserExists(string username)
     {
         return await _userManager.Users.AnyAsync(x => x.UserName.Equals(username));
+    }
+    
+    private async Task<bool> EmailExists(string registerDtoEmail)
+    {
+        return await _userManager.Users.AnyAsync(x => x.Email.Equals(registerDtoEmail));
     }
     
 }
