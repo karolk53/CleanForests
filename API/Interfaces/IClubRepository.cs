@@ -4,6 +4,6 @@ namespace API.Interfaces;
 
 public interface IClubRepository
 {
-    void CreateNewClub(Club club);
-    
+    Task CreateNewClub(Club club);
+    Task<bool> SaveChangesAsync();
 }

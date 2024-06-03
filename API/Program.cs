@@ -1,5 +1,6 @@
 using System.Text;
 using API.Data;
+using API.Data.Repositories;
 using API.Entities;
 using API.Interfaces;
 using API.Services;
@@ -16,6 +17,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IClubRepository, ClubRepository>();
 
 builder.Services.AddDbContext<DataContext>(opt =>
     opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));

@@ -1,19 +1,21 @@
 ﻿using API.Data;
 using API.DTOs;
 using API.Entities;
+using API.Interfaces;
 using AutoMapper;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
-public class ClubController
+public class ClubController : BaseApiController
 {
-    private readonly DataContext _context;
+    private readonly IClubRepository _clubRepository;
     private readonly IMapper _mapper;
 
-    public ClubController(DataContext context, IMapper mapper)
+    public ClubController(IClubRepository clubRepository, IMapper mapper)
     {
-        _context = context;
+        _clubRepository = clubRepository;
         _mapper = mapper;
     }
 
@@ -23,6 +25,15 @@ public class ClubController
         var club = _mapper.Map<Club>(createDto);
         var address = _mapper.Map<Address>(createDto);
 
-        return null;
+        club.Address = address;
+
+        await _clubRepository.CreateNewClub(club);
+
+        if (await _clubRepository.SaveChangesAsync())
+        {
+            return Ok("Club created successfully");
+        }
+
+        return BadRequest("Failed to create a club");
     }
 }

@@ -12,8 +12,13 @@ public class ClubRepository : IClubRepository
         _context = context;
     }
 
-    public void CreateNewClub(Club club)
+    public async Task CreateNewClub(Club club)
     {
-        throw new NotImplementedException();
+        await _context.Clubs.AddAsync(club);
+    }
+
+    public async Task<bool> SaveChangesAsync()
+    {
+        return await _context.SaveChangesAsync() > 0;
     }
 }
