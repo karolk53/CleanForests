@@ -22,8 +22,7 @@ namespace API.Data.Migrations
                     Province = table.Column<string>(type: "TEXT", nullable: true),
                     County = table.Column<string>(type: "TEXT", nullable: true),
                     Borough = table.Column<string>(type: "TEXT", nullable: true),
-                    Description = table.Column<string>(type: "TEXT", nullable: true),
-                    AddressId = table.Column<int>(type: "INTEGER", nullable: false)
+                    Description = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {

@@ -16,19 +16,15 @@ public class DataContext : IdentityDbContext<AppUser, AppRole, int,
     public DataContext(DbContextOptions<DataContext> options) : base(options)
     {
     }
-    
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
 
-        builder.Entity<Address>()
-            .HasOne(c => c.Club)
-            .WithOne(a => a.Address)
-            .HasForeignKey<Club>(fk => fk.AddressId);
-        
         builder.Entity<Club>()
-            .HasOne(a => a.Address)
-            .WithOne(c => c.Club)
-            .HasForeignKey<Address>(fk => fk.ClubId);
+            .HasOne(e => e.Address)
+            .WithOne(e => e.Club)
+            .HasForeignKey<Address>(e => e.ClubId)
+            .IsRequired();
     }
 }

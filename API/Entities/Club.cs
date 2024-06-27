@@ -12,5 +12,4 @@ public class Club
     public string Description { get; set; }
 
     public Address Address { get; set; }
-    public int AddressId { get; set; }
 }

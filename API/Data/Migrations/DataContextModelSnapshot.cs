@@ -172,9 +172,6 @@ namespace API.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("AddressId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Borough")
                         .HasColumnType("TEXT");
 
