@@ -1,4 +1,5 @@
 using Application;
+using FastEndpoints;
 using Infrastructure;
 using Presentation;
 
@@ -9,7 +10,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services
     .AddApplication()
-    .AddInfrastructure()
+    .AddInfrastructure(builder.Configuration)
     .AddPresentation();
 
 var app = builder.Build();
@@ -21,5 +22,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseFastEndpoints();
 
 app.Run();
