@@ -1,5 +1,9 @@
-﻿using Domain.Entities;
+﻿using Application.Repositories;
+using Application.Services.Abstractions;
+using Domain.Entities;
 using Infrastructure.Data;
+using Infrastructure.Repositories;
+using Infrastructure.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -24,6 +28,9 @@ public static class DependencyInjection
             .AddRoles<AppRole>()
             .AddRoleManager<RoleManager<AppRole>>()
             .AddEntityFrameworkStores<DataContext>();
+
+        services.AddScoped<ITokenService, TokenService>();
+        services.AddScoped<IUserRepository, UserRepository>();
         
         return services;
     }

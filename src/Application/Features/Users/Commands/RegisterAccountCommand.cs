@@ -1,7 +1,7 @@
 ﻿using Application.Features.Users.DTOs;
+using FluentResults;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 
 namespace Application.Features.Users.Commands;
 
-public record RegisterAccountCommand(RegisterDTO RegisterDto) : IRequest<IdentityResult>;
+public record RegisterAccountCommand(RegisterDTO RegisterDto) : IRequest<Result<string>>;
