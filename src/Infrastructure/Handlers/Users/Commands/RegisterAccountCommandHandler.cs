@@ -14,9 +14,9 @@ public class RegisterAccountCommandHandler(UserManager<AppUser> userManager, Rol
 {
     public async Task<Result<string>> Handle(RegisterAccountCommand request, CancellationToken cancellationToken)
     {
-        if (await userRepository.UserExists(request.RegisterDto.UserName))
+        if (await userRepository.UserExists(request.RegisterDto.Email))
         {
-            return Result.Fail($"User with name {request.RegisterDto.UserName} already exists.");
+            return Result.Fail($"User with email {request.RegisterDto.Email} already exists.");
         }
         
         var user = new AppUser

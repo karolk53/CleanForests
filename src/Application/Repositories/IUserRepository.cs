@@ -2,5 +2,5 @@
 
 public interface IUserRepository
 {
-    Task<bool> UserExists(string username);
+    Task<bool> UserExists(string email);
 }

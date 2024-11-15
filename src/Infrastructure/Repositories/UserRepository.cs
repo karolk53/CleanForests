@@ -6,8 +6,8 @@ namespace Infrastructure.Repositories;
 
 public class UserRepository(UserManager<AppUser> userManager) : IUserRepository 
 {
-    public async Task<bool> UserExists(string username)
+    public async Task<bool> UserExists(string emial)
     {
-        return userManager.Users.Any(u => u.UserName == username);
+        return userManager.Users.Any(u => u.Email == emial);
     }
 }
